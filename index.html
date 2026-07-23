@@ -9,6 +9,9 @@
 </head>
 <body>
 
+    <!-- เพิ่มแท็กเครื่องเล่นเสียง MP3 (ให้นำไฟล์เพลงใส่ไว้ในโฟลเดอร์ audio/ แล้วตั้งชื่อว่า music.mp3) -->
+    <audio id="bg-music" src="audio/1.mp3" loop></audio>
+
     <!-- หน้าโหลด 5 วินาที -->
     <div id="preloader">
         <div class="running-heart-container">
@@ -40,17 +43,17 @@
 
             <div class="header-text" id="header-text">
                 <div class="tech-badge">STATUS: ANGRY_GF <span class="blink">●</span></div>
-                <h1>ขอโทษนะคนดี</h1>
+                <h1>ขอโทษนะค้าบบคนดี</h1>
                 <p>ให้อภัยเค้านะคะคนเก่ง</p>
             </div>
 
             <div class="action-zone" id="action-zone">
-                <button class="main-btn glow-btn" id="btn-yes">ให้อภัยนะ</button>
+                <button class="main-btn glow-btn" id="btn-yes">ให้อภัยเค้านะค้าบบ</button>
                 <button class="main-btn outline-btn" id="btn-no">ไม่ให้อภัย!</button>
             </div>
         </div>
 
-        <!-- ซองจดหมายและหัวใจพุ่งโค้งสูงจากซอง -->
+        <!-- ซองจดหมายและหัวใจพุ่งโค้งสูง -->
         <div class="envelope-container" id="env-container">
             <div class="envelope" id="envelope">
                 <div class="flap-top"></div>
@@ -58,15 +61,33 @@
             </div>
             
             <div class="floating-options" id="floating-options">
-                <button class="heart-btn hb-1" onclick="showResult('ง้อนะค้าบ')">
+                <button class="heart-btn hb-1" onclick="openCard(1)">
                     <span>ง้อนะ<br>ค้าบ</span>
                 </button>
-                <button class="heart-btn hb-2" onclick="showResult('ดีกันได้ไหมค้าบ')">
+                <button class="heart-btn hb-2" onclick="openCard(2)">
                     <span>ดีกันได้<br>ไหมค้าบ</span>
                 </button>
-                <button class="heart-btn hb-3" onclick="showResult('เค้ารักหนูนะ')">
+                <button class="heart-btn hb-3" onclick="openCard(3)">
                     <span>เค้ารัก<br>หนูนะ</span>
                 </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- หน้าต่างเปิดการ์ดรูปภาพ -->
+    <div class="photo-card-overlay" id="photo-card-overlay">
+        <div class="photo-card glass-card">
+            <div class="photo-frame">
+                <img id="card-image" src="" alt="รูปง้อแฟน">
+            </div>
+
+            <div class="typewriter-box">
+                <p id="typewriter-text"></p>
+            </div>
+
+            <div class="card-action-zone">
+                <button class="card-btn back-btn" onclick="closePhotoCard()">↩ กลับไปดูหัวใจอีกดวง</button>
+                <button class="card-btn forgive-btn" onclick="showFinalSuccess()">หายงอนแล้ว 💖</button>
             </div>
         </div>
     </div>
@@ -76,8 +97,8 @@
         <div class="spam-msg glass-card initial-spam" id="initial-spam">
             <button class="close-x" id="trigger-spam-btn">✖</button>
             <div class="spam-content">
-                <h2>งอนเค้าหรอ... 🥺</h2>
-                <p>กดปิดสิ ถ้าคิดว่าหนีพ้น!</p>
+                <h2>ยังงอนเค้าหรอค้าบ... 🥺</h2>
+                <p>กดปิดสิ ถ้าคิดว่าหนีเค้าพ้น!</p>
             </div>
         </div>
     </div>
@@ -85,12 +106,14 @@
     <!-- หน้าจอยินดีตอนจบ -->
     <div class="overlay" id="overlay">
         <div id="confetti-container"></div> 
-        <div class="success-card">
-            <div class="beating-heart">💖</div>
-            <div class="tech-badge" style="margin: 0 auto 15px auto; color: #ff2a55; background: rgba(255, 42, 85, 0.15); border-color: rgba(255, 42, 85, 0.3);">ACCESS: GRANTED</div>
-            <h1>เย้! ดีกันแล้วนะ</h1>
-            <p id="result-text"></p>
-            <p class="hint-text">/* แคปหน้านี้ส่งมาให้เค้าดูเลยน้า */</p>
+        <div class="success-card glass-card">
+            <div class="photo-frame" style="height: 220px; margin-bottom: 15px;">
+                <img id="final-card-image" src="" alt="รูปความทรงจำ">
+            </div>
+            <div class="tech-badge" style="margin: 0 auto 10px auto; color: #ff2a55; background: rgba(255, 42, 85, 0.15); border-color: rgba(255, 42, 85, 0.3);">ACCESS: GRANTED</div>
+            <h1 style="font-size: 24px; color: #333; margin-bottom: 5px;">เย้! ดีกันแล้วนะ 💖</h1>
+            <p id="final-result-text" style="font-size: 15px; color: #ff2a55; margin-bottom: 15px; font-weight: 500;"></p>
+            <p class="hint-text">/* อ้วนรักหนูมากๆๆๆๆ */</p>
         </div>
     </div>
 

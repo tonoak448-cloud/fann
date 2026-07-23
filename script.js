@@ -168,8 +168,6 @@ function startTypewriter(message) {
     }, 45); 
 }
 
-
-
 function closePhotoCard() {
     photoCardOverlay.classList.remove('show');
     clearInterval(typingTimer);
@@ -208,3 +206,5 @@ function createConfetti() {
         }, i * 150); 
     }
 }
+
+

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ดีกันนะคนเก่ง 🥺</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- หน้าโหลด 5 วินาที -->
+    <div id="preloader">
+        <div class="running-heart-container">
+            <div class="running-heart">💖</div>
+            <div class="heart-shadow"></div>
+        </div>
+        <div class="loader-text">กำลังโหลดความรัก...</div>
+        <div class="loading-bar">
+            <div class="loading-progress"></div>
+        </div>
+    </div>
+
+    <div class="noise"></div>
+    <div class="tech-grid"></div>
+    <div class="aurora-bg">
+        <div class="orb orb-1">❤</div>
+        <div class="orb orb-2">❤</div>
+        <div class="orb orb-3">❤</div>
+    </div>
+
+    <!-- Wrapper หลักคุมกึ่งกลางหน้าจอ -->
+    <div class="page-center-wrapper">
+        <!-- การ์ดหลัก (หน้าแรก) -->
+        <div class="glass-card" id="card">
+            <div class="corner top-left"></div>
+            <div class="corner top-right"></div>
+            <div class="corner bottom-left"></div>
+            <div class="corner bottom-right"></div>
+
+            <div class="header-text" id="header-text">
+                <div class="tech-badge">STATUS: ANGRY_GF <span class="blink">●</span></div>
+                <h1>ขอโทษนะคนดี</h1>
+                <p>ให้อภัยเค้านะคะคนเก่ง</p>
+            </div>
+
+            <div class="action-zone" id="action-zone">
+                <button class="main-btn glow-btn" id="btn-yes">ให้อภัยนะ</button>
+                <button class="main-btn outline-btn" id="btn-no">ไม่ให้อภัย!</button>
+            </div>
+        </div>
+
+        <!-- ซองจดหมายและหัวใจพุ่งโค้งสูงจากซอง -->
+        <div class="envelope-container" id="env-container">
+            <div class="envelope" id="envelope">
+                <div class="flap-top"></div>
+                <div class="flap-front"></div>
+            </div>
+            
+            <div class="floating-options" id="floating-options">
+                <button class="heart-btn hb-1" onclick="showResult('ง้อนะค้าบ')">
+                    <span>ง้อนะ<br>ค้าบ</span>
+                </button>
+                <button class="heart-btn hb-2" onclick="showResult('ดีกันได้ไหมค้าบ')">
+                    <span>ดีกันได้<br>ไหมค้าบ</span>
+                </button>
+                <button class="heart-btn hb-3" onclick="showResult('เค้ารักหนูนะ')">
+                    <span>เค้ารัก<br>หนูนะ</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ไวรัสคลั่งรัก -->
+    <div id="spam-overlay">
+        <div class="spam-msg glass-card initial-spam" id="initial-spam">
+            <button class="close-x" id="trigger-spam-btn">✖</button>
+            <div class="spam-content">
+                <h2>งอนเค้าหรอ... 🥺</h2>
+                <p>กดปิดสิ ถ้าคิดว่าหนีพ้น!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- หน้าจอยินดีตอนจบ -->
+    <div class="overlay" id="overlay">
+        <div id="confetti-container"></div> 
+        <div class="success-card">
+            <div class="beating-heart">💖</div>
+            <div class="tech-badge" style="margin: 0 auto 15px auto; color: #ff2a55; background: rgba(255, 42, 85, 0.15); border-color: rgba(255, 42, 85, 0.3);">ACCESS: GRANTED</div>
+            <h1>เย้! ดีกันแล้วนะ</h1>
+            <p id="result-text"></p>
+            <p class="hint-text">/* แคปหน้านี้ส่งมาให้เค้าดูเลยน้า */</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -41,7 +41,7 @@ body {
     100% { transform: translate(-5vw, -8vh) scale(0.95) rotate(-5deg); }
 }
 
-/* --- Wrapper ควบคุมกึ่งกลางหน้าจอแบบสมบูรณ์ --- */
+/* --- Wrapper --- */
 .page-center-wrapper {
     position: relative; z-index: 10;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -58,6 +58,9 @@ body {
     display: flex; flex-direction: column; align-items: center; 
     transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
+.glass-card.clear-bg { background: transparent; border-color: transparent; box-shadow: none; backdrop-filter: blur(0px); -webkit-backdrop-filter: blur(0px); }
+.glass-card.clear-bg .corner { opacity: 0; transform: translateY(-20px); pointer-events: none; }
+.glass-card.clear-bg .header-text { opacity: 0; transform: translateY(-20px); pointer-events: none; }
 
 .corner { position: absolute; width: 25px; height: 25px; border: 2px solid var(--primary); opacity: 0.5; transition: 0.5s; }
 .top-left { top: 20px; left: 20px; border-right: none; border-bottom: none; border-radius: 8px 0 0 0; }
@@ -73,18 +76,11 @@ body {
 .header-text h1 { color: #333; font-size: 34px; font-weight: 600; margin-bottom: 5px; }
 .header-text p { color: #666; font-size: 16px; margin: 0; }
 
-/* --- ซองจดหมายและกลุ่มหัวใจ --- */
+/* --- ซองจดหมายและหัวใจ --- */
 .envelope-container { 
-    position: absolute; 
-    width: 320px; 
-    height: 210px;
-    display: none; 
-    opacity: 0; 
-    transform: translateY(20px);
-    left: 50%;
-    top: 50%;
-    margin-left: -160px; 
-    margin-top: -105px;  
+    position: absolute; width: 320px; height: 210px;
+    display: none; opacity: 0; transform: translateY(20px);
+    left: 50%; top: 50%; margin-left: -160px; margin-top: -105px;  
 }
 .envelope { position: relative; width: 100%; height: 100%; background: #e2e8f0; border-radius: 12px; box-shadow: 0 15px 40px rgba(0,0,0,0.15); transition: opacity 0.5s ease 0.8s, transform 0.5s ease 0.8s; }
 .flap-front { position: absolute; inset: 0; z-index: 4; pointer-events: none; background: rgba(248, 249, 250, 0.95); clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 100%, 0 100%); border-radius: 12px; }
@@ -93,34 +89,18 @@ body {
 .envelope-container.open .flap-top { transform: rotateX(180deg); z-index: 1; }
 .envelope-container.open .envelope { opacity: 0; transform: translateY(30px) scale(0.9); pointer-events: none; }
 
-/* โครงสร้าง Flexbox จัดกึ่งกลางซอง ขยายความกว้างช่องไฟเพิ่มขึ้นอีก 10% รองรับหัวใจที่ใหญ่ขึ้น */
 .floating-options { 
-    position: absolute; 
-    top: 50%; 
-    left: 50%; 
-    transform: translate(-50%, -50%);
-    width: 530px; 
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
-    gap: 18px;
-    z-index: 10; 
-    pointer-events: none;
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 530px; display: flex; justify-content: center; align-items: center; gap: 18px;
+    z-index: 10; pointer-events: none;
 }
+.envelope-container.open .floating-options { pointer-events: all; }
 
-.envelope-container.open .floating-options { 
-    pointer-events: all; 
-}
-
-/* เพิ่มขนาดหัวใจขึ้นอีก 10% (จาก 140px เป็น 155px) */
 .heart-btn { 
     position: relative; width: 155px; height: 143px; 
     background: transparent; border: none; cursor: pointer; 
-    display: flex; align-items: center; justify-content: center; 
-    opacity: 0;
+    display: flex; align-items: center; justify-content: center; opacity: 0;
 }
-
-/* แอนิเมชันพุ่งโค้งสูงจากซอง */
 .envelope-container.open .hb-1 { animation: highParabolicArc1 1s cubic-bezier(0.2, 1.2, 0.4, 1.1) 0.3s forwards; }
 .envelope-container.open .hb-2 { animation: highParabolicArc2 1s cubic-bezier(0.2, 1.2, 0.4, 1.1) 0.5s forwards; }
 .envelope-container.open .hb-3 { animation: highParabolicArc3 1s cubic-bezier(0.2, 1.2, 0.4, 1.1) 0.7s forwards; }
@@ -155,6 +135,114 @@ body {
 .heart-btn:hover { transform: scale(1.15) translateY(-5px); }
 .heart-btn:hover::before { filter: drop-shadow(0 18px 30px rgba(255, 42, 85, 0.75)); }
 
+/* --- หน้าต่างแสดงการ์ดรูปภาพ --- */
+.photo-card-overlay {
+    position: fixed; inset: 0; background: rgba(255, 240, 243, 0.85); backdrop-filter: blur(15px);
+    display: flex; align-items: center; justify-content: center; z-index: 150;
+    opacity: 0; pointer-events: none; transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    padding: 15px;
+}
+.photo-card-overlay.show { opacity: 1; pointer-events: all; }
+
+/* --- ขยายขนาดการ์ดหลักและกรอบรูปให้ใหญ่และคมชัดขึ้นบนคอม --- */
+.photo-card {
+    width: 100%; 
+    max-width: 560px; /* ขยายความกว้างการ์ดให้ใหญ่ขึ้น (จากเดิม ~380px) */
+    padding: 35px 30px;
+    transform: scale(0.8); 
+    transition: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.photo-card-overlay.show .photo-card { transform: scale(1); }
+
+/* ขยายกรอบรูปให้กว้างและสูงขึ้น รองรับรูปแนวนอนเต็มๆ ตา */
+.photo-frame {
+    width: 100%; 
+    height: 340px; /* เพิ่มความสูงกรอบรูปให้ใหญ่ขึ้น รูปจะไม่ถูกบีบจนแตก */
+    background: #fff; 
+    border-radius: 20px;
+    overflow: hidden; 
+    border: 2px solid rgba(255, 42, 85, 0.3);
+    margin-bottom: 20px; 
+    box-shadow: 0 10px 25px rgba(255, 42, 85, 0.1);
+}
+
+.photo-frame img { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; /* ดึงรูปแนวนอนให้เต็มกรอบสวยๆ */
+    image-rendering: -webkit-optimize-contrast; /* เพิ่มความคมชัด */
+}
+
+/* ทำให้การ์ดหน้าจบ (Success Card) มีขนาดกว้างและสัดส่วนเท่ากับการ์ดรูปแรกเป๊ะๆ */
+.success-card { 
+    text-align: center; 
+    transform: scale(0.9); 
+    transition: 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); 
+    width: 100%; 
+    max-width: 520px; /* ปรับความกว้างให้เท่ากับการ์ดรูปแรก (photo-card) */
+    padding: 35px 30px; /* เพิ่มระยะขอบด้านในให้โปร่งและใหญ่ขึ้น */
+    background: var(--glass-bg);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid var(--glass-border);
+    border-radius: 35px;
+    box-shadow: 0 25px 60px rgba(255, 42, 85, 0.15);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.overlay.show .success-card { transform: scale(1); }
+
+/* ปรับขนาดกรอบรูปในหน้าจบให้กว้างเต็มการ์ดสวยๆ เหมือนรูปแรก */
+.success-card .photo-frame {
+    width: 100%;
+    height: 320px; /* ปรับความสูงให้รูปแนวนอนแสดงได้เต็มตา ไม่เล็กเกินไป */
+    background: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 2px solid rgba(255, 42, 85, 0.3);
+    margin-bottom: 20px;
+    box-shadow: 0 10px 25px rgba(255, 42, 85, 0.1);
+}
+
+.success-card .photo-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    image-rendering: -webkit-optimize-contrast;
+}
+
+/* ==========================================================
+   ระบบย่อขนาดอัตโนมัติ (เมื่อเปิดในโทรศัพท์มือถือ)
+   ========================================================== */
+@media screen and (max-width: 480px) {
+    .photo-card, .success-card { 
+        max-width: 90vw; /* ในมือถือจะปรับให้กว้างพอดีจอ 90% ไม่ล้น */
+        padding: 20px 15px; 
+        border-radius: 25px; 
+    }
+    
+    .photo-frame { 
+        height: 220px; /* ในมือถือจะปรับความสูงลงมาให้อัตโนมัติ เพื่อไม่ให้ยาวเกินจอโทรศัพท์ */
+        border-radius: 15px; 
+    }
+    
+    .typewriter-box p { 
+        font-size: 13px; /* ปรับขนาดตัวอักษรในมือถือให้พอดีอ่านง่าย */
+    }
+}
+.typewriter-box p { color: #444; font-size: 15px; font-weight: 500; text-align: center; line-height: 1.4; }
+
+.card-action-zone { display: flex; gap: 10px; width: 100%; }
+.card-btn {
+    flex: 1; padding: 12px 8px; border-radius: 25px; font-family: 'Prompt', sans-serif;
+    font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.3s; border: none; text-align: center;
+}
+.back-btn { background: rgba(255, 255, 255, 0.9); color: #666; border: 1px solid rgba(0,0,0,0.1); }
+.back-btn:hover { background: #f1f5f9; }
+.forgive-btn { background: var(--primary); color: white; box-shadow: 0 6px 15px var(--primary-glow); }
+.forgive-btn:hover { transform: scale(1.03); }
+
 /* --- ปุ่มหน้าแรก --- */
 .action-zone { display: flex; gap: 15px; width: 100%; transition: opacity 0.4s; }
 .main-btn { flex: 1; padding: 15px; border-radius: 30px; font-family: 'Prompt', sans-serif; font-size: 16px; font-weight: 500; cursor: pointer; transition: 0.3s; border: none; }
@@ -175,15 +263,37 @@ body {
 @keyframes pulseBtn { 0% { transform: translateX(-50%) scale(1); } 100% { transform: translateX(-50%) scale(1.1); } }
 
 /* --- Overlay ตอนจบ --- */
-.overlay { position: fixed; inset: 0; background: rgba(255,255,255,0.9); backdrop-filter: blur(15px); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 100; opacity: 0; pointer-events: none; transition: 0.6s; }
+.overlay { position: fixed; inset: 0; background: rgba(255,255,255,0.9); backdrop-filter: blur(15px); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 200; opacity: 0; pointer-events: none; transition: 0.6s; padding: 20px; }
 .overlay.show { opacity: 1; pointer-events: all; }
-.success-card { text-align: center; transform: scale(0.9); transition: 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); background: rgba(255,255,255,0.8); padding: 50px 30px; border-radius: 40px; box-shadow: 0 30px 60px rgba(255,42,85,0.1); width: 90%; max-width: 420px; border: 1px solid rgba(255,255,255,0.9); }
+.success-card { text-align: center; transform: scale(0.9); transition: 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); width: 100%; max-width: 380px; }
 .overlay.show .success-card { transform: scale(1); }
-.beating-heart { font-size: 80px; margin-bottom: 20px; animation: heartBeat 1s infinite alternate; }
-.success-card h1 { color: #333; font-size: 32px; margin-bottom: 10px; font-weight: 600; }
-.success-card p#result-text { font-size: 22px; color: #ff2a55; margin-bottom: 20px; font-weight: 500; }
-.success-card .hint-text { font-family: 'Fira Code', monospace; font-size: 13px; color: #94a3b8; }
-@keyframes heartBeat { 0% { transform: scale(0.95); } 100% { transform: scale(1.1); } }
+.hint-text { font-family: 'Fira Code', monospace; font-size: 12px; color: #94a3b8; }
 #confetti-container { position: absolute; inset: 0; pointer-events: none; z-index: -1; overflow: hidden; }
 .mini-heart { position: absolute; top: -50px; animation: fall linear forwards; }
 @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+/* บังคับขนาดการ์ดหน้าจบให้เท่ากับการ์ดรูปแรกเป๊ะๆ แบบไม่มีอะไรกั้น */
+.overlay .success-card {
+    width: 100% !important;
+    max-width: 520px !important;
+    padding: 35px 30px !important;
+    background: var(--glass-bg, rgba(255, 255, 255, 0.85)) !important;
+    backdrop-filter: blur(25px) !important;
+    border-radius: 35px !important;
+    box-shadow: 0 25px 60px rgba(255, 42, 85, 0.15) !important;
+}
+
+.overlay .success-card .photo-frame {
+    width: 100% !important;
+    height: 320px !important;
+    background: #fff !important;
+    border-radius: 20px !important;
+    overflow: hidden !important;
+    border: 2px solid rgba(255, 42, 85, 0.3) !important;
+    margin-bottom: 20px !important;
+}
+
+.overlay .success-card .photo-frame img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+}
